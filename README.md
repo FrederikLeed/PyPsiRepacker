@@ -12,23 +12,68 @@ A streaming Python implementation that converts NTLM hash text files to binary w
 
 **RAM usage:** ~0 (streams line by line)
 
+#### Prerequisites (Windows)
+
+1. **Install Python 3.6 or later** — download from [python.org](https://www.python.org/downloads/)
+   - During installation, check **"Add Python to PATH"**
+2. **Verify** by opening Command Prompt or PowerShell:
+   ```
+   python --version
+   ```
+3. **Clone or download** this repository:
+   ```
+   git clone https://github.com/improsec/PsiRepacker.git
+   cd PsiRepacker
+   ```
+
+#### Usage
+
+Run from the repository root:
+
 ```
 python -m pypsirepacker <input filepath> <output filepath>
 ```
 
-For example:
+**Windows example (Command Prompt or PowerShell):**
 
 ```
-python -m pypsirepacker "C:\pwned-passwords-ntlm.txt" "C:\pwned-passwords-ntlm.bin"
+python -m pypsirepacker "D:\output\hashes\pwnedpasswords_ntlm.txt" "D:\output\bin\pwnedpasswords_ntlm.bin"
 ```
 
-Options:
+**Linux / macOS example:**
+
+```
+python3 -m pypsirepacker /data/pwnedpasswords_ntlm.txt /data/pwnedpasswords_ntlm.bin
+```
+
+#### Options
 
 | Flag | Description |
 |------|-------------|
 | `--no-verify` | Skip sort-order verification (not recommended) |
 
 Sort-order verification is enabled by default. If a hash is found out of order, conversion aborts immediately — this means the input was not pre-sorted and a streaming approach cannot produce a valid binary file.
+
+#### Example run (Pwned Passwords v10, ~2 billion NTLM hashes)
+
+| | File | Size |
+|---|---|---|
+| **Input** | `pwnedpasswords_ntlm.txt` | ~70 GB |
+| **Output** | `pwnedpasswords_ntlm.bin` | ~30.6 GB |
+
+```
+Counting entries in pwnedpasswords_ntlm.txt...
+Found 2,052,742,897 entries.
+Converting to binary: pwnedpasswords_ntlm.bin
+   1,800,000,000 / 2,052,742,897 (87.7%)
+   1,850,000,000 / 2,052,742,897 (90.1%)
+   1,900,000,000 / 2,052,742,897 (92.6%)
+   1,950,000,000 / 2,052,742,897 (95.0%)
+   2,000,000,000 / 2,052,742,897 (97.4%)
+   2,050,000,000 / 2,052,742,897 (99.9%)
+Done. Wrote 2,052,742,897 entries (32,843,886,352 bytes + 8 byte header).
+Completed in 870.2 seconds.
+```
 
 ### PsiRepacker (C++ — original)
 
